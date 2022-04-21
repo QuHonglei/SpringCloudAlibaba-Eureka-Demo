@@ -1,0 +1,74 @@
+
+spring:
+  profiles:
+    active: dev  #指定激活哪个环境
+  application:
+    name: userService # 服务名称
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+--- # 开发环境
+spring:
+  datasource:
+    username: root
+    password: 123456
+    # mysql 5 驱动不同 com.mysql.jdbc.Driver
+    # mysql 8 驱动不同com.mysql.cj.jdbc.Driver、需要增加时区的配置 serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/cloud-user?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource # 自定义数据源
+    druid:
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+
+      #配置监控统计拦截的filters，stat:监控统计、log4j：日志记录、wall：防御sql注入
+      #如果允许时报错 java.lang.ClassNotFoundException: org.apache.log4j.Priority
+      #则导入 log4j 依赖即可，Maven 地址： https://mvnrepository.com/artifact/log4j/log4j
+      filters: stat,wall
+      maxPoolPreparedStatementPerConnectionSize: 20
+      useGlobalDataSourceStat: true
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  config:
+    activate:
+      on-profile: dev #配置环境名称
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml #映射文件路径
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.itheibai.user.pojo
+logging:
+  level:
+    com.itheibai: debug
+    org.springframework: info
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS
+
+
+--- # 测试环境
+spring:
+  config:
+    activate:
+      on-profile: test #配置环境的名称
+server:
+  port: 8081
+
+--- # 正式环境
+spring:
+  config:
+    activate:
+      on-profile: prod #配置环境的名称
+server:
+  port: 8082

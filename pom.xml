@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.itheibai</groupId>
+    <artifactId>cloud-ali</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <!-- 当创建子模块时这里会自动出现   -->
+    <modules>
+        <module>user-service</module>
+        <module>order-service</module>
+        <module>eureka-server</module>
+    </modules>
+    <!-- 一、创建父工程
+         1.新建了maven项目
+         2.引入父依赖
+         3.引入springCloudAlibaba 依赖，从官网复制
+         4.引入mysql驱动依赖
+         5.引入mybatis-plus依赖
+         6.引入lombok依赖
+         7.引入druid依赖
+         8.引入mybatis-plus代码生成器依赖
+      -->
+    <!-- 二、创建子工程（微服务）
+         1.配置swagger
+         2.配置druid
+         3.自动生成代码
+         4.编写业务接口
+         5.用swagger测试
+         然后同样的步骤在创建第二个子工程
+    -->
+
+    <!-- 三、远程调用
+         1.在order-service（在启动类中注册，或新建一个配置类） 中注册 RestTemplate 实例
+         2.修改order查询方法
+       -->
+
+    <!-- 四、Eureka
+         1.创建 Eureka 模块子工程
+         2.引入 Eureka 依赖(server)
+         3.编写启动类
+         4.编写配置文件yml
+         5.配置服务名称
+         6.配置 Eureka 地址
+         -->
+
+    <!-- 五、服务注册
+         1.引入依赖（client）
+         2.配置服务名称
+         3.配置 Eureka 地址
+       -->
+    <!-- 六、服务发现
+         1.将接口的ip地址改为服务名称
+         2.在启动器 RestTemplate 实例上添加负载均衡注解 @LoadBalanced
+         -->
+    <!-- 打包类型，默认为jar -->
+    <packaging>pom</packaging>
+
+    <!-- springboot 父依赖   -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.6</version>
+    </parent>
+    <!-- 版本号管理 -->
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <spring-cloud.version>2021.0.1.0</spring-cloud.version>
+        <mysql.version>8.0.28</mysql.version>
+        <mybatis-plus.version>3.5.0</mybatis-plus.version>
+        <lombok.version>1.18.22</lombok.version>
+        <druid.vertion>1.2.8</druid.vertion>
+        <mybatis-plus-generator.version>3.5.2</mybatis-plus-generator.version>
+        <swagger.version>3.0.0</swagger.version>
+        <eureka.version>3.1.1</eureka.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- springCloud -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- mysql驱动 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <!--  mybatis-plus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!--   lombok    -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <!--  数据源 druid ，如果未导入启动器，配置文件中不会识别  -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.vertion}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.vertion}</version>
+                <!--      代码生成器依赖    -->
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus-generator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>2.3.30</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <!--  eureka注册中心   -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+                <version>${eureka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+                <version>${eureka.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <!-- 如果在maven中找不到 就去springCloud仓库找 -->
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/libs-milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+</project>
