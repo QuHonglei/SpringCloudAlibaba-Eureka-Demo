@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.itheibai</groupId>
-    <artifactId>cloud-ali</artifactId>
+    <artifactId>SpringCloudAlibaba-Eureka-Demo</artifactId>
     <version>1.0-SNAPSHOT</version>
     <!-- 当创建子模块时这里会自动出现   -->
     <modules>
