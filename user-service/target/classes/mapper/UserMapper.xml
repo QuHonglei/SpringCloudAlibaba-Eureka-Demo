@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itheibai.user.sys.dao.UserDao">
-
-    <select id="getUserByKeyword" resultType="com.itheibai.user.sys.pojo.User">
-        select * from tb_user tu where (locate(#{keyword},tu.username) > 0 or locate(#{keyword},tu.address) > 0)
-    </select>
-</mapper>
